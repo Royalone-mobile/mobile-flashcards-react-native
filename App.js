@@ -5,6 +5,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { purple, white } from './utils/colors'
 import Decks from './components/Decks'
 import AddDeck from './components/AddDeck'
+import Cards from './components/Cards'
 import AddCard from './components/AddCard'
 import AppStatusBar from './components/AppStatusBar'
 
@@ -43,14 +44,27 @@ const Tabs = TabNavigator({
   }
 })
 
-
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs
+  },
+  Cards: {
+    screen: Cards,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  }
+})
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={{flex:1}}>
         <AppStatusBar backgroundColor={purple} barStyle='light-content' />
-        <Tabs />
+        <MainNavigator />
       </View>
     );
   }
