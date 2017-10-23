@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, Platform } from 'react-native
 import TextButton from './TextButton'
 import { white, gray, black, purple } from '../utils/colors'
 import AddCard from './AddCard'
+import Quiz from './Quiz'
 
 class Cards extends Component {
 
@@ -28,7 +29,10 @@ class Cards extends Component {
                 { entryId: 'key'}
               )}
               style={[styles.button, styles.addButton]}>Add Card</TextButton>
-            <TextButton onPress={() => {alert('Add Card')}} style={[styles.button, styles.quizButton]}>Start Quiz</TextButton>
+            <TextButton  onPress={() => this.props.navigation.navigate(
+                'Quiz',
+                { entryId: 'key'}
+              )} style={[styles.button, styles.quizButton]}>Start Quiz</TextButton>
           </View>
         </View>
       </View>
