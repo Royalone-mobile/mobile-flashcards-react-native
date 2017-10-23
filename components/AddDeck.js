@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Platform } from 'react-native'
 
-class NewDeck extends Component {
+class AddDeck extends Component {
 
   render() {
     return (
@@ -12,4 +12,4 @@ class NewDeck extends Component {
   }
 }
 
-export default NewDeck
+export default AddDeck
