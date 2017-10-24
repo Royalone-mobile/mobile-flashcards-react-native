@@ -9,7 +9,12 @@ class Quiz extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { isFlipped: false };
+    this.state = {
+      isFlipped: false,
+      score: 0,
+      cardNo: 1,
+      currentCard: {},
+    };
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -18,6 +23,20 @@ class Quiz extends Component {
     return {
       title: `Quiz`
     }
+  }
+
+  correct = () => {
+
+    this.next()
+  }
+
+  incorrect = () => {
+
+    this.next()
+  }
+
+  next = () => {
+
   }
 
   render() {
