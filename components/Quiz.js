@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import TextButton from './TextButton'
 import { white, red, green } from '../utils/colors'
 import FlipView from 'react-native-flip-view-next'
+import { NavigationActions } from 'react-navigation'
 
 class Quiz extends Component {
 
@@ -12,9 +13,23 @@ class Quiz extends Component {
     this.state = {
       isFlipped: false,
       score: 0,
-      cardNo: 1,
+      cardNo: 0,
+      TotalCard: 0,
       currentCard: {},
-    };
+    }
+  }
+
+  componentDidMount() {
+    const { deck } = this.props
+
+    // TODO: collect wrong and correct answer
+    this.setState({
+      isFlipped: false,
+      score: 0,
+      cardNo: 1,
+      TotalCard: deck.cards.length,
+      currentCard: deck.cards.length > 0 ? deck.cards[0] : {},
+    })
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -27,16 +42,45 @@ class Quiz extends Component {
 
   correct = () => {
 
-    this.next()
+    this.next(1)
   }
 
+  // TODO: collect wrong answer
   incorrect = () => {
 
-    this.next()
+    this.next(0)
   }
 
-  next = () => {
+  next = (mark) => {
+    const { deck } = this.props
+    if(this.state.cardNo >= deck.cards.length){
+      // this.setState({
+      //   ...this.state,
+      //   score: this.state.score + mark
+      // })
+      this.showScore(this.state.score + mark)
+      return
+    }
+    this.setState({
+      isFlipped: false,
+      score: this.state.score + mark,
+      cardNo: this.state.cardNo + 1,
+      TotalCard: deck.cards.length,
+      currentCard: deck.cards.length <= (this.state.cardNo + 1) ? deck.cards[this.state.cardNo] : {},
+    })
+  }
 
+  // TODO: Show Score and correct and incorrect number without alert
+  showScore = (score) => {
+    const { TotalCard } = this.state
+    alert(`Your Total Score: ${score * 10}\n
+          Correct: ${score}\n
+          Incorrect: ${TotalCard - score}\n
+          `)
+
+    this.props.navigation.dispatch(NavigationActions.back())
+
+    // set notification tomorrow
   }
 
   render() {
@@ -61,7 +105,7 @@ class Quiz extends Component {
        return (
          <View style={styles.infoContainer}>
           {this._commonTop()}
-          <Text style={styles.title}>??????</Text>
+          <Text style={styles.title}>{this.state.currentCard.question}</Text>
            <TouchableOpacity onPress={this._flip}>
              <Text style={styles.subTitle}>Answer</Text>
            </TouchableOpacity>
@@ -74,7 +118,7 @@ class Quiz extends Component {
        return (
          <View style={styles.infoContainer}>
            {this._commonTop()}
-           <Text style={styles.title}>ans...</Text>
+           <Text style={styles.title}>{this.state.currentCard.answer}</Text>
            <TouchableOpacity onPress={this._flip}>
              <Text style={styles.subTitle}>Question</Text>
            </TouchableOpacity>
@@ -85,7 +129,7 @@ class Quiz extends Component {
 
      _commonTop = () => {
        return (
-         <Text style={styles.questionsNum}>2/2</Text>
+         <Text style={styles.questionsNum}>{this.state.cardNo}/{this.state.TotalCard}</Text>
        )
      }
 
@@ -93,9 +137,9 @@ class Quiz extends Component {
        return (
          <View style={styles.buttonContainer}>
            <View style={{flex: 1}}>
-             <TextButton  onPress={() => alert('cr')}
+             <TextButton  onPress={() => this.correct() }
                style={[styles.button, styles.correctButton]}>Correct</TextButton>
-             <TextButton  onPress={() => alert('ic')}
+             <TextButton  onPress={() => this.incorrect() }
                style={[styles.button, styles.incorrectButton]}>Incorrect</TextButton>
            </View>
          </View>
@@ -175,8 +219,9 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(decks, { navigation }) {
-  const { entryId } = navigation.state.params
+  const { entryId,deck } = navigation.state.params
   return {
+    deck,
     decks,
     entryId
   }
