@@ -66,7 +66,7 @@ class Quiz extends Component {
 
      _commonTop = () => {
        return (
-         <Text>2/2</Text>
+         <Text style={styles.questionsNum}>2/2</Text>
        )
      }
 
@@ -107,6 +107,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginBottom: 30,
+  },
+  questionsNum: {
+    marginLeft: 15,
   },
   title: {
     marginTop: 50,
