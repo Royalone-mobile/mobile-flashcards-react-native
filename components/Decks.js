@@ -1,23 +1,47 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Platform, ScrollView } from 'react-native'
+import { connect } from 'react-redux'
+import { addDeck } from '../actions'
+
 import { gray, purple, white } from '../utils/colors'
+import { fetchDecks } from '../utils/helpers'
+import { receiveDecks } from '../actions'
 import Cards from './Cards'
 
 class Decks extends Component {
 
+  componentDidMount() {
+    const { dispatch } = this.props
+
+    fetchDecks()
+      .then((decks) => {
+        alert(JSON.stringify(decks))
+        dispatch(receiveDecks(decks))
+      } )
+  }
+
   render() {
+    const { decks } = this.props
+
     return (
       <View style={{flex: 1}}>
         <ScrollView contentContainerStyle={styles.container}>
-
-          <TouchableOpacity onPress={() => this.props.navigation.navigate(
-              'Cards',
-              { entryId: 'key'}
-            )}
-            style={styles.deck}>
-              <Text style={styles.title}>Decks</Text>
-              <Text style={styles.subTitle}>12 Cards</Text>
-          </TouchableOpacity>
+          {Object.keys(decks).map((key) => {
+            return(
+              <TouchableOpacity key={key} onPress={() => this.props.navigation.navigate(
+                  'Cards',
+                  { entryId: key, title: decks[key].title}
+                )}
+                style={styles.deck}>
+                  <Text style={styles.title}>{decks[key].title}</Text>
+                  <Text style={styles.subTitle}>
+                    {decks[key].cards !== undefined
+                      ? decks[key].cards.length
+                      : 0 } Cards
+                  </Text>
+              </TouchableOpacity>
+            )
+          })}
 
         </ScrollView>
       </View>
@@ -58,5 +82,10 @@ const styles = StyleSheet.create({
   }
 })
 
+function mapStateToProps(decks) {
+  return {
+    decks
+  }
+}
 
-export default Decks
+export default connect(mapStateToProps)(Decks)
