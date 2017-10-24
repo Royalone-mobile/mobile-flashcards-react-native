@@ -4460,6 +4460,10 @@ react-native-flip-card@^3.5.2:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-flip-view-next@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-flip-view-next/-/react-native-flip-view-next-1.0.0.tgz#da0f1c1c9242e3637944e4d7e9cd09ec9d947fd3"
+
 react-native-gesture-handler@1.0.0-alpha.22:
   version "1.0.0-alpha.22"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.0-alpha.22.tgz#96e5ae08b26a9e99d115f6e16f63d7487ef995fc"
