@@ -52,6 +52,12 @@ class Quiz extends Component {
   }
 
   next = (mark) => {
+    if(this.state.isFlipped){
+      this.setState({
+        ...this.state,
+        isFlipped: false,
+      })
+    }
     const { deck } = this.props
     if(this.state.cardNo >= deck.cards.length){
       // this.setState({
@@ -85,13 +91,63 @@ class Quiz extends Component {
 
   render() {
     const deck = this.props.decks[this.props.entryId]
+    const { currentCard } = this.state
+    
+    _renderFront = () => {
+      return (
+        <View style={styles.infoContainer}>
+         {_commonTop()}
+         <Text style={styles.title}>{ currentCard.question}</Text>
+          <TouchableOpacity onPress={_flip}>
+            <Text style={styles.subTitle}>Answer</Text>
+          </TouchableOpacity>
+         {_commonBottom()}
+        </View>
+      )
+    }
+
+    _renderBack = () => {
+      return (
+        <View style={styles.infoContainer}>
+          {_commonTop()}
+          <Text style={styles.title}>{currentCard.answer}</Text>
+          <TouchableOpacity onPress={_flip}>
+            <Text style={styles.subTitle}>Question</Text>
+          </TouchableOpacity>
+          {_commonBottom()}
+        </View>
+      )
+    }
+
+    _commonTop = () => {
+      return (
+        <Text style={styles.questionsNum}>{this.state.cardNo}/{this.state.TotalCard}</Text>
+      )
+    }
+
+    _commonBottom = () => {
+      return (
+        <View style={styles.buttonContainer}>
+          <View style={{flex: 1}}>
+            <TextButton  onPress={() => this.correct() }
+              style={[styles.button, styles.correctButton]}>Correct</TextButton>
+            <TextButton  onPress={() => this.incorrect() }
+              style={[styles.button, styles.incorrectButton]}>Incorrect</TextButton>
+          </View>
+        </View>
+      )
+    }
+
+    _flip = () => {
+      this.setState({isFlipped: !this.state.isFlipped})
+    }
 
     return (
         <FlipView style={styles.container}
-           front={this._renderFront()}
-           back={this._renderBack()}
+           front={_renderFront()}
+           back={_renderBack()}
            isFlipped={this.state.isFlipped}
-           onFlipped={(val) => {console.log('Flipped: ' + val);}}
+           onFlipped={(val) => {console.log('Flipped: ' + val)}}
            flipAxis="y"
            flipEasing={Easing.out(Easing.ease)}
            flipDuration={500}
@@ -101,54 +157,7 @@ class Quiz extends Component {
        )
      }
 
-     _renderFront = () => {
-       return (
-         <View style={styles.infoContainer}>
-          {this._commonTop()}
-          <Text style={styles.title}>{this.state.currentCard.question}</Text>
-           <TouchableOpacity onPress={this._flip}>
-             <Text style={styles.subTitle}>Answer</Text>
-           </TouchableOpacity>
-          {this._commonBottom()}
-         </View>
-       )
-     }
 
-     _renderBack = () => {
-       return (
-         <View style={styles.infoContainer}>
-           {this._commonTop()}
-           <Text style={styles.title}>{this.state.currentCard.answer}</Text>
-           <TouchableOpacity onPress={this._flip}>
-             <Text style={styles.subTitle}>Question</Text>
-           </TouchableOpacity>
-           {this._commonBottom()}
-         </View>
-       )
-     }
-
-     _commonTop = () => {
-       return (
-         <Text style={styles.questionsNum}>{this.state.cardNo}/{this.state.TotalCard}</Text>
-       )
-     }
-
-     _commonBottom = () => {
-       return (
-         <View style={styles.buttonContainer}>
-           <View style={{flex: 1}}>
-             <TextButton  onPress={() => this.correct() }
-               style={[styles.button, styles.correctButton]}>Correct</TextButton>
-             <TextButton  onPress={() => this.incorrect() }
-               style={[styles.button, styles.incorrectButton]}>Incorrect</TextButton>
-           </View>
-         </View>
-       )
-     }
-
-     _flip = () => {
-       this.setState({isFlipped: !this.state.isFlipped})
-     }
 
 }
 
