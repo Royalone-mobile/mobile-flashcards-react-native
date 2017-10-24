@@ -57,6 +57,8 @@ class Quiz extends Component {
         ...this.state,
         isFlipped: false,
       })
+
+      // delay
     }
     const { deck } = this.props
     if(this.state.cardNo >= deck.cards.length){
@@ -72,7 +74,7 @@ class Quiz extends Component {
       score: this.state.score + mark,
       cardNo: this.state.cardNo + 1,
       TotalCard: deck.cards.length,
-      currentCard: deck.cards.length <= (this.state.cardNo + 1) ? deck.cards[this.state.cardNo] : {},
+      currentCard:  this.state.cardNo !== deck.cards.length ? deck.cards[this.state.cardNo] : {},
     })
   }
 
@@ -92,7 +94,7 @@ class Quiz extends Component {
   render() {
     const deck = this.props.decks[this.props.entryId]
     const { currentCard } = this.state
-    
+
     _renderFront = () => {
       return (
         <View style={styles.infoContainer}>
