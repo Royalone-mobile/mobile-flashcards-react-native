@@ -2,6 +2,10 @@ import React from 'react'
 import { Text, View, Platform } from 'react-native'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers'
+
 import { purple, white } from './utils/colors'
 import Decks from './components/Decks'
 import AddDeck from './components/AddDeck'
@@ -81,10 +85,12 @@ const MainNavigator = StackNavigator({
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{flex:1}}>
-        <AppStatusBar backgroundColor={purple} barStyle='light-content' />
-        <MainNavigator />
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={{flex:1}}>
+          <AppStatusBar backgroundColor={purple} barStyle='light-content' />
+          <MainNavigator />
+        </View>
+      </Provider>
     );
   }
 }
