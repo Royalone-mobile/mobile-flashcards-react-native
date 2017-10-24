@@ -52,29 +52,36 @@ class Quiz extends Component {
   }
 
   next = (mark) => {
+
+    if(this.state.cardNo >= this.state.TotalCard ){
+      this.showScore(this.state.score + mark)
+    }
+
     if(this.state.isFlipped){
       this.setState({
-        ...this.state,
-        isFlipped: false,
-      })
+          ...this.state,
+          isFlipped: false,
+          currentCard: {},
+        }, () => this.setNextState(mark) )
 
-      // delay
-    }
-    const { deck } = this.props
-    if(this.state.cardNo >= deck.cards.length){
-      // this.setState({
-      //   ...this.state,
-      //   score: this.state.score + mark
-      // })
-      this.showScore(this.state.score + mark)
+
+
       return
     }
+
+    this.setNextState(mark)
+
+  }
+
+  setNextState(mark){
+    const { deck } = this.props
+
     this.setState({
       isFlipped: false,
       score: this.state.score + mark,
       cardNo: this.state.cardNo + 1,
       TotalCard: deck.cards.length,
-      currentCard:  this.state.cardNo !== deck.cards.length ? deck.cards[this.state.cardNo] : {},
+      currentCard:  (this.state.cardNo+1) <= deck.cards.length ? deck.cards[this.state.cardNo] : {},
     })
   }
 
