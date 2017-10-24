@@ -15,5 +15,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: white,
     backgroundColor: purple,
+    borderWidth: 1,
   }
 })
