@@ -38,7 +38,10 @@ class Cards extends Component {
               style={[styles.button, styles.addButton]}>Add Card</TextButton>
             <TextButton  onPress={() => this.props.navigation.navigate(
                 'Quiz',
-                { entryId: 'key'}
+                {
+                  entryId: this.props.entryId,
+                  deck: deck,
+                }
               )} style={[styles.button, styles.quizButton]}>Start Quiz</TextButton>
           </View>
         </View>
