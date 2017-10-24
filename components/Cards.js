@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Platform } from 'react-native'
+import { connect } from 'react-redux'
 import TextButton from './TextButton'
 import { white, gray, black, purple } from '../utils/colors'
 import AddCard from './AddCard'
@@ -8,25 +9,31 @@ import Quiz from './Quiz'
 class Cards extends Component {
 
   static navigationOptions = ({ navigation }) => {
-    const { entryId } = navigation.state.params
+    const { entryId, title } = navigation.state.params
 
     return {
-      title: `CardName`
+      title: `${title}`
     }
   }
 
   render() {
+    const deck = this.props.decks[this.props.entryId]
     return (
       <View style={styles.container}>
         <View style={styles.infoContainer}>
-          <Text style={styles.title}>Deck Name</Text>
-          <Text style={styles.subTitle}>12 Cards</Text>
+          <Text style={styles.title}>{deck.title}</Text>
+          <Text style={styles.subTitle}>{deck.cards !== undefined
+            ? deck.cards.length
+            : 0 } Cards</Text>
         </View>
         <View style={styles.buttonContainer}>
           <View style={{flex: 1}}>
             <TextButton  onPress={() => this.props.navigation.navigate(
                 'AddCard',
-                { entryId: 'key'}
+                {
+                  entryId: this.props.entryId,
+                  deck: deck,
+                }
               )}
               style={[styles.button, styles.addButton]}>Add Card</TextButton>
             <TextButton  onPress={() => this.props.navigation.navigate(
@@ -99,4 +106,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Cards
+function mapStateToProps(decks, { navigation }) {
+  const { entryId } = navigation.state.params
+  return {
+    decks,
+    entryId
+  }
+}
+
+export default connect(mapStateToProps)(Cards)
