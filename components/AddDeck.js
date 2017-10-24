@@ -8,14 +8,42 @@ import {
   AppRegistry,
   TextInput
 } from 'react-native'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
+
+import { addDeck } from '../actions'
+import { setDeck } from '../utils/helpers'
 import TextButton from './TextButton'
 
 class AddDeck extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { deckText: '' };
+    this.state = { deckText: '' }
   }
+
+  submit = () => {
+    let deck = {
+      title: this.state.deckText,
+      cards: []
+    }
+    let deckId = setDeck(deck)
+    this.props.dispatch(addDeck(deck, deckId))
+
+    // reset
+
+    this.setState({ deckText: '' })
+
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home'})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
+
+  }
+
 
   render() {
     return (
@@ -24,10 +52,10 @@ class AddDeck extends Component {
         <TextInput
           style={styles.textInput}
           onChangeText={(deckText) => this.setState({deckText})}
-          value={this.state.text}
+          value={this.state.deckText}
           placeholder={'Deck Title'}
         />
-        <TextButton  onPress={() => alert('New Deck')} style={[styles.button]}>Submit</TextButton>
+        <TextButton  onPress={this.submit} style={[styles.button]}>Submit</TextButton>
       </View>
     )
   }
@@ -72,4 +100,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddDeck
+
+export default connect()(AddDeck)
