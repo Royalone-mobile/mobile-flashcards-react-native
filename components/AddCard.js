@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, TextInput, StyleSheet, Platform } from 'react-native'
 import TextButton from './TextButton'
+import { addCardToDeck } from '../utils/helpers'
+import { connect } from 'react-redux'
+import { addCard } from '../actions'
+import { NavigationActions } from 'react-navigation'
 
 class AddCard extends Component {
 
@@ -13,11 +17,26 @@ class AddCard extends Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { entryId } = navigation.state.params
+    // const { entryId } = navigation.state.params
 
     return {
       title: `Add Card`
     }
+  }
+
+  submit = () => {
+    const { entryId, deck } = this.props
+
+    let card = {
+      question: this.state.question,
+      answer: this.state.answer
+    }
+
+    this.props.dispatch(addCard(card, deck, entryId))
+
+    addCardToDeck(card, deck, entryId)
+
+    this.props.navigation.dispatch(NavigationActions.back())
   }
 
   render() {
@@ -36,7 +55,7 @@ class AddCard extends Component {
           value={this.state.answer}
           placeholder={'Answer'}
         />
-        <TextButton  onPress={() => alert('New Deck')} style={[styles.button]}>Submit</TextButton>
+        <TextButton  onPress={this.submit} style={[styles.button]}>Submit</TextButton>
       </View>
     )
   }
@@ -74,4 +93,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddCard
+function mapStateToProps(decks, { navigation }) {
+  const { entryId, deck } = navigation.state.params
+  return {
+    deck,
+    decks,
+    entryId,
+  }
+}
+
+export default connect(mapStateToProps)(AddCard)
