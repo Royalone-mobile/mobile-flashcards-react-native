@@ -13,6 +13,8 @@ import Cards from './components/Cards'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
 import AppStatusBar from './components/AppStatusBar'
+import { setLocalNotification } from './utils/helpers'
+
 
 const Tabs = TabNavigator({
   Decks: {
@@ -83,6 +85,11 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
+
+  componentDidMount () {
+    setLocalNotification()
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer)}>
