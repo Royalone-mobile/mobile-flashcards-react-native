@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Platform, Easing } from 'react-native'
 import { connect } from 'react-redux'
 import TextButton from './TextButton'
-import { white, red, green } from '../utils/colors'
+import { white, red, green, purple } from '../utils/colors'
 import FlipView from 'react-native-flip-view-next'
 import { NavigationActions } from 'react-navigation'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
@@ -22,6 +22,10 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
+    this.init()
+  }
+
+  init = () => {
     const { deck } = this.props
 
     // TODO: collect wrong and correct answer
@@ -31,6 +35,7 @@ class Quiz extends Component {
       cardNo: 1,
       TotalCard: deck.cards.length,
       currentCard: deck.cards.length > 0 ? deck.cards[0] : {},
+      showScore: false,
     })
   }
 
@@ -56,7 +61,7 @@ class Quiz extends Component {
   next = (mark) => {
 
     if(this.state.cardNo >= this.state.TotalCard ){
-      this.showScore(this.state.score + mark)
+      return this.showScore(mark)
     }
 
     if(this.state.isFlipped){
@@ -82,22 +87,40 @@ class Quiz extends Component {
       cardNo: this.state.cardNo + 1,
       TotalCard: deck.cards.length,
       currentCard:  (this.state.cardNo+1) <= deck.cards.length ? deck.cards[this.state.cardNo] : {},
+      showScore: false,
     })
   }
 
   // TODO: Show Score and correct and incorrect number without alert
-  showScore = (score) => {
-    const { TotalCard } = this.state
-    alert(`👋 Your Total Score: ${score * 10}\n
-          Correct: ${score}\n
-          Incorrect: ${TotalCard - score}\n
-          `)
+  showScore = (mark) => {
 
-    this.props.navigation.dispatch(NavigationActions.back())
+    this.setState({
+      ...this.state,
+      isFlipped: false,
+      score: this.state.score + mark,
+      showScore: true,
+    })
+
+
+    // // const { TotalCard } = this.state
+    // const { TotalCard, score } = this.state
+    // alert(`👋 Your Total Score: ${score * 10}\n
+    //       Correct: ${score}\n
+    //       Incorrect: ${TotalCard - score}\n
+    //       `)
+
+    // this.props.navigation.dispatch(NavigationActions.back())
 
     // set notification tomorrow
     clearLocalNotification()
       .then(setLocalNotification)
+  }
+
+  toHome = () => {
+
+    this.props.navigation.navigate('Home')
+    //this.props.navigation.dispatch(NavigationActions.back('Home'))
+
   }
 
   render() {
@@ -153,8 +176,8 @@ class Quiz extends Component {
       this.setState({isFlipped: !this.state.isFlipped})
     }
 
-    return (
-        <FlipView style={styles.container}
+    return  this.state.showScore === false
+        ? (<FlipView style={styles.container}
            front={_renderFront()}
            back={_renderBack()}
            isFlipped={this.state.isFlipped}
@@ -163,10 +186,23 @@ class Quiz extends Component {
            flipEasing={Easing.out(Easing.ease)}
            flipDuration={500}
            perspective={1000}
-          />
-
-       )
-     }
+          />)
+        : (<View style={[styles.container]}>
+            <View style={{flex: 1}}>
+              <Text style={styles.score}>👋 Your Total Score: {this.state.score * 10}</Text>
+              <Text style={styles.score}>Correct: {this.state.score}</Text>
+              <Text style={styles.score}>Incorrect: {this.state.TotalCard - this.state.score}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <View style={{flex: 1}}>
+                <TextButton  onPress={() => this.init() }
+                  style={[styles.button, styles.playAgain]}>Play Again</TextButton>
+                <TextButton  onPress={() => this.toHome() }
+                  style={[styles.button, styles.home]}>Home</TextButton>
+              </View>
+            </View>
+          </View>)
+  }
 
 
 
@@ -193,6 +229,14 @@ const styles = StyleSheet.create({
   },
   questionsNum: {
     marginLeft: 15,
+  },
+  score: {
+    flex: 1,
+    // alignItems: 'stretch',
+    marginTop: 50,
+    // justifyContent: 'space-around',
+    fontSize: 20,
+    textAlign: 'center',
   },
   title: {
     marginTop: 50,
@@ -235,6 +279,17 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: red,
     borderWidth: 1,
+  },
+  playAgain: {
+    color: purple,
+    backgroundColor: white,
+    borderStyle: 'solid',
+    borderColor: purple,
+    borderWidth: 1,
+  },
+  home: {
+    color: white,
+    backgroundColor: purple
   }
 })
 
