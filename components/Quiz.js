@@ -5,6 +5,7 @@ import TextButton from './TextButton'
 import { white, red, green } from '../utils/colors'
 import FlipView from 'react-native-flip-view-next'
 import { NavigationActions } from 'react-navigation'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
 
@@ -64,8 +65,6 @@ class Quiz extends Component {
           currentCard: {},
         }, () => this.setNextState(mark) )
 
-
-
       return
     }
 
@@ -96,6 +95,8 @@ class Quiz extends Component {
     this.props.navigation.dispatch(NavigationActions.back())
 
     // set notification tomorrow
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
 
   render() {
