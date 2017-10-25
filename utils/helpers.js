@@ -79,9 +79,9 @@ export function setLocalNotification () {
               Notifications.cancelAllScheduledNotificationsAsync()
 
               let tomorrow = new Date()
-              tomorrow.setDate(tomorrow.getDate() + 1)
-              tomorrow.setHours(20)
-              tomorrow.setMinutes(0)
+              // tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(12)
+              tomorrow.setMinutes(14)
 
               Notifications.scheduleLocalNotificationAsync(
                createNotification(),
@@ -91,7 +91,7 @@ export function setLocalNotification () {
                }
               )
 
-              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+              AsyncStorage.setItem(FLASHCARDS_NOTIFICATION_KEY, JSON.stringify(true))
             }
           })
       }

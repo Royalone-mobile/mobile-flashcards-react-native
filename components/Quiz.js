@@ -88,7 +88,7 @@ class Quiz extends Component {
   // TODO: Show Score and correct and incorrect number without alert
   showScore = (score) => {
     const { TotalCard } = this.state
-    alert(`Your Total Score: ${score * 10}\n
+    alert(`👋 Your Total Score: ${score * 10}\n
           Correct: ${score}\n
           Incorrect: ${TotalCard - score}\n
           `)
