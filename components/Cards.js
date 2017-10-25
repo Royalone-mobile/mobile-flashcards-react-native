@@ -6,6 +6,8 @@ import { white, gray, black, purple } from '../utils/colors'
 import AddCard from './AddCard'
 import Quiz from './Quiz'
 
+// TODO: Edit and Delete Options
+
 class Cards extends Component {
 
   static navigationOptions = ({ navigation }) => {

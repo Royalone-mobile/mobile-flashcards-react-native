@@ -7,6 +7,7 @@ import FlipView from 'react-native-flip-view-next'
 import { NavigationActions } from 'react-navigation'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
+// TODO: Edit and Delete Options
 class Quiz extends Component {
 
   constructor(props) {

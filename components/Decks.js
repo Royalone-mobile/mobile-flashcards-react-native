@@ -15,7 +15,7 @@ class Decks extends Component {
 
     fetchDecks()
       .then((decks) => {
-        alert(JSON.stringify(decks))
+        // alert(JSON.stringify(decks))
         dispatch(receiveDecks(decks))
       } )
   }
