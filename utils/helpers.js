@@ -1,8 +1,8 @@
 import { AsyncStorage } from 'react-native'
 import { Notifications, Permissions } from 'expo'
 
-export const FLASHCARDS_STORAGE_KEY = 'Flashcards:data:dev:1'
-const FLASHCARDS_NOTIFICATION_KEY = 'Flashcards:notifications'
+export const FLASHCARDS_STORAGE_KEY = 'Sadiq:Flashcards:data'
+const FLASHCARDS_NOTIFICATION_KEY = 'Sadiq:Flashcards:notifications'
 
 export function  generateId(Id = '') {
   Id = Id.replace(/\W/g, '_')
