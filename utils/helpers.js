@@ -54,8 +54,8 @@ export function clearLocalNotification () {
 
 function createNotification () {
   return {
-    title: '👋 Log your stats!',
-    body:  '👋 don\'t forget to log your stats for today',
+    title: '👋 Study Time!',
+    body:  '👋 don\'t forget to study with flashcard today',
     ios: {
       sound: true,
     },
@@ -79,9 +79,9 @@ export function setLocalNotification () {
               Notifications.cancelAllScheduledNotificationsAsync()
 
               let tomorrow = new Date()
-              // tomorrow.setDate(tomorrow.getDate() + 1)
-              tomorrow.setHours(12)
-              tomorrow.setMinutes(14)
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(20)
+              tomorrow.setMinutes(0)
 
               Notifications.scheduleLocalNotificationAsync(
                createNotification(),
