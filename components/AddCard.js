@@ -8,13 +8,10 @@ import { NavigationActions } from 'react-navigation'
 
 class AddCard extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+    state = {
       question: '',
       answer: ''
-    };
-  }
+    }
 
   static navigationOptions = ({ navigation }) => {
     // const { entryId } = navigation.state.params

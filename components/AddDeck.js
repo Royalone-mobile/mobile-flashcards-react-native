@@ -17,10 +17,7 @@ import TextButton from './TextButton'
 
 class AddDeck extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = { deckText: '' }
-  }
+  state = { deckText: '' }
 
   submit = () => {
     let deck = {
